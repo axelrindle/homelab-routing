@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start",
+            "type": "shell",
+            "command": "wgo run .",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "group": "none",
+            "options": {
+                "statusbar": {
+                    "icon": {
+                        "id": "play"
+                    }
+                }
+            }
+        },        {
+            "label": "Traefik",
+            "type": "shell",
+            "command": "./traefik",
+            "args": [
+                "--configfile",
+                "traefik.yaml"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}/test",
+                "statusbar": {
+                    "icon": {
+                        "id": "play"
+                    }
+                }
+            }
+        },
+        {
+            "label": "Port Forward",
+            "type": "shell",
+            "command": "kubectl port-forward -n kube-system deployments/traefik 8080",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent"
+            },
+            "group": "none",
+            "options": {
+                "statusbar": {
+                    "icon": {
+                        "id": "call-incoming"
+                    }
+                }
+            }
+        }
+    ]
+}
