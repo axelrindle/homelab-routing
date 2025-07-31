@@ -30,7 +30,7 @@ tasks:
         go build -v \
           -ldflags="-w -s -X '{{.APP_PACKAGE}}/main.Version={{.APP_VERSION}}' -X '{{.APP_COMMIT_HASH}}/main.CommitHash={{.APP_COMMIT_HASH}}' -X '{{.APP_BUILD_TIMESTAMP}}/main.BuildTimestamp={{.APP_BUILD_TIMESTAMP}}'" \
           -o "{{.ABS}}"
-      - du --si "{{.ABS}}"
+      - du -sh "{{.ABS}}"
 
   test:
     cmd: go test -v -cover -coverprofile=coverage.out ./...
