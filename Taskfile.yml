@@ -7,7 +7,7 @@ vars:
   APP_PACKAGE:
     sh: cat go.mod | head -n1 | cut -d\  -f2
   APP_VERSION:
-    sh: go run scripts/task.go
+    sh: GOOS="" GOARCH="" go run scripts/task.go
   APP_COMMIT_HASH:
     sh: git rev-parse --short HEAD
   APP_BUILD_TIMESTAMP:
