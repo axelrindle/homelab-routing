@@ -1,18 +1,29 @@
 package app
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
 	"strings"
 
 	dynamic "github.com/traefik/traefik/v3/pkg/config/dynamic"
 )
 
+func strToBase64(str string) string {
+	return base64.StdEncoding.EncodeToString([]byte(str))
+}
+
 func (a *App) fetchTraefikRouters() ([]routerRepresentation, error) {
 	url := fmt.Sprintf("%s/api/http/routers?status=enabled", a.Config.Traefik.Endpoint)
 
-	res, err := a.http.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if a.Config.Traefik.BasicAuth != "" {
+		req.Header.Add("Authorization", fmt.Sprintf("Basic %s", strToBase64(a.Config.Traefik.BasicAuth)))
+	}
+
+	res, err := a.http.Do(req)
 	if err != nil {
 		a.ready = false
 		return nil, err
@@ -53,10 +64,12 @@ func (a *App) buildTraefikConfiguration(src []routerRepresentation) dynamic.Conf
 			Rule:        router.Rule,
 			Service:     name,
 			EntryPoints: a.Config.Generator.Entrypoints,
+			Middlewares: a.Config.Generator.Middlewares,
+			TLS:         &dynamic.RouterTLSConfig{},
 		}
 		services[name] = &dynamic.Service{
 			LoadBalancer: &dynamic.ServersLoadBalancer{
-				PassHostHeader: TruePointer(),
+				PassHostHeader: &a.Config.Generator.PassHostHeader,
 				Servers:        servers,
 			},
 		}

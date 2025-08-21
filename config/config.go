@@ -6,14 +6,16 @@ type ServerConfig struct {
 
 type TraefikConfig struct {
 	Endpoint   string `key:"endpoint" validate:"required,http_url"`
+	BasicAuth  string `key:"basicAuth"`
 	RuleFilter string `key:"ruleFilter"`
 	Timeout    int64  `key:"timeout" default:"5"`
 }
 
 type GeneratorConfig struct {
-	Entrypoints   []string `key:"entrypoints" validate:"required"`
-	TargetServers []string `key:"targets" validate:"required"`
-	Middlewares   []string `key:"middlewares"`
+	Entrypoints    []string `key:"entrypoints" validate:"required"`
+	TargetServers  []string `key:"targets" validate:"required"`
+	Middlewares    []string `key:"middlewares"`
+	PassHostHeader bool     `key:"passHostHeader" validate:"boolean" default:"false"`
 }
 
 type Config struct {
