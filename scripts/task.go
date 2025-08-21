@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -33,6 +34,9 @@ func main() {
 			log.Fatal(err)
 		}
 
-		os.Stdout.WriteString("v" + strings.Trim(string(version), "\n") + "-dev")
+		manual := fmt.Sprintf("%s+dev%s",
+			strings.Trim(string(version), "\n"),
+			os.Getenv("GITHUB_RUN_NUMBER"))
+		os.Stdout.WriteString(manual)
 	}
 }
