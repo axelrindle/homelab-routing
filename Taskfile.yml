@@ -25,10 +25,15 @@ tasks:
   build:
     vars:
       ABS: "{{.OUTPUT_DIRECTORY}}/{{.OUTPUT_FILE_NAME}}{{.OUTPUT_FILE_SUFFIX}}"
+      LDFLAGS: "{{.APP_PACKAGE}}/main.Version={{.APP_VERSION}}' -X '{{.APP_COMMIT_HASH}}/main.CommitHash={{.APP_COMMIT_HASH}}' -X '{{.APP_BUILD_TIMESTAMP}}/main.BuildTimestamp={{.APP_BUILD_TIMESTAMP}}"
+    sources:
+      - "**/*.go"
+    generates:
+      - "{{.ABS}}"
     cmds:
       - |
         go build -v \
-          -ldflags="-w -s -X '{{.APP_PACKAGE}}/main.Version={{.APP_VERSION}}' -X '{{.APP_COMMIT_HASH}}/main.CommitHash={{.APP_COMMIT_HASH}}' -X '{{.APP_BUILD_TIMESTAMP}}/main.BuildTimestamp={{.APP_BUILD_TIMESTAMP}}'" \
+          -ldflags="-w -s -X '{{.LDFLAGS}}'" \
           -o "{{.ABS}}"
       - du -sh "{{.ABS}}"
 
@@ -41,6 +46,12 @@ tasks:
   pkg:debian:
     deps:
       - task: build
+    sources:
+      - pkg/debian/DEBIAN
+      - pkg/debian/etc
+      - pkg/debian/usr
+    generates:
+      - pkg/debian/*.deb
     cmds:
       - cp "{{.OUTPUT_DIRECTORY}}/{{.OUTPUT_FILE_NAME}}{{.OUTPUT_FILE_SUFFIX}}" pkg/debian/usr/bin
       - cd pkg/debian && docker build . -o . --build-arg "DEB_ARCH=${GOARCH}" --build-arg "DEB_VERSION={{.APP_VERSION}}"

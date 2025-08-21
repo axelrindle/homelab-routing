@@ -59,6 +59,7 @@ Temporary Items
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,go
 
-config.yml
 dist/
+.task/
+config.yml
 *.deb
