@@ -1,0 +1,5 @@
+Package: homelab-traefik
+Description: homelab traefik setup
+Maintainer: Axel Rindle
+Priority: optional
+Depends: systemd

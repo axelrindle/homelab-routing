@@ -2,7 +2,7 @@ version: '3'
 
 vars:
   OUTPUT_DIRECTORY: dist
-  OUTPUT_FILE_NAME: routing
+  OUTPUT_FILE_NAME: homelab-routing
   OUTPUT_FILE_SUFFIX:
   APP_PACKAGE:
     sh: cat go.mod | head -n1 | cut -d\  -f2
@@ -37,3 +37,10 @@ tasks:
 
   start:
     cmd: go run .
+
+  pkg:debian:
+    deps:
+      - task: build
+    cmds:
+      - cp "{{.OUTPUT_DIRECTORY}}/{{.OUTPUT_FILE_NAME}}{{.OUTPUT_FILE_SUFFIX}}" pkg/debian/usr/bin
+      - cd pkg/debian && docker build . -o . --build-arg "DEB_ARCH=${GOARCH}" --build-arg "DEB_VERSION={{.APP_VERSION}}"

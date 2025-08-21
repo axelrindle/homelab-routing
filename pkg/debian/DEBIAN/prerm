@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -x
+
+systemctl stop traefik
+systemctl stop traefik-config

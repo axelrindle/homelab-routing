@@ -1,0 +1,11 @@
+[Unit]
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/traefik --configfile /etc/traefik/traefik.yml
+WorkingDirectory=/etc/traefik
+EnvironmentFile=-/etc/traefik/environment
+
+[Install]
+WantedBy=default.target

@@ -47,3 +47,31 @@ jobs:
         with:
           name: binary-${{ matrix.arch }}
           path: dist/*
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - debian
+        arch:
+          - amd64
+          - arm64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package
+        run: task pkg:${{ matrix.target }}
+        env:
+          GOOS: linux
+          GOARCH: ${{ matrix.arch }}
