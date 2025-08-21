@@ -18,8 +18,8 @@ func init() {
 	})
 }
 
-func (c *Config) Load() {
-	err := config.LoadFiles("config.yml")
+func (c *Config) Load(file string) {
+	err := config.LoadFiles(file)
 
 	err = config.Decode(c)
 	if err != nil {

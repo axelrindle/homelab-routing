@@ -22,7 +22,10 @@ var (
 	BuildTimestamp = "unknown"
 )
 
-var showVersion bool
+var (
+	showVersion bool
+	configFile  string
+)
 
 func BuildVersion() string {
 	return fmt.Sprintf("%s-%s (%s)", Version, CommitHash, BuildTimestamp)
@@ -41,19 +44,20 @@ func makeLogger(c *config.Config) (*zap.Logger, error) {
 func main() {
 	println(banner)
 
-	config := &config.Config{}
-	config.Load()
-
-	logger, err := makeLogger(config)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	flag.BoolVar(&showVersion, "version", false, "show program version")
+	flag.StringVar(&configFile, "config", "config.yml", "path to the config file")
 	flag.Parse()
 	if showVersion {
 		println(BuildVersion())
 		return
+	}
+
+	config := &config.Config{}
+	config.Load(configFile)
+
+	logger, err := makeLogger(config)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	logger.Info("starting program", zap.String("mode", config.Environment))
