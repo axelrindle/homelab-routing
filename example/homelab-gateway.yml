@@ -1,0 +1,26 @@
+# endpoint for upstream Traefik to scrape configuration
+server:
+  address: ":1336"
+
+# downstream Traefik config
+traefik:
+  # downstream Traefik api endpoint
+  endpoint: https://traefik-api.homelab.local
+
+  # I placed basic authentication in my setup
+  basicAuth: traefik:traefik
+
+  # only include rules which contain this string
+  ruleFilter: example.dev
+
+generator:
+  # load-balance to the k3s manager nodes
+  targets:
+    - https://10.10.10.1
+    - https://10.10.10.2
+
+  # Traefik settings
+  entrypoints:
+    - websecure
+  middlewares: []
+  passHostHeader: true
