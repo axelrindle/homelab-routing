@@ -27,6 +27,8 @@ jobs:
           - arm64
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-go@v5
         with:
@@ -65,6 +67,8 @@ jobs:
           - arm64
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-go@v5
         with:
