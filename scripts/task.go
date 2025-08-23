@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -12,14 +13,21 @@ import (
 
 const versionFile = "version.txt"
 
-var regex = regexp.MustCompile(`^v\d+\.\d+\.\d+$`)
+var regex = regexp.MustCompile(`^\d+\.\d+\.\d+$`)
 
-func main() {
-	cmd := strings.Split("git describe --tags --always --abbrev=0", " ")
-	fromGit, err := exec.Command(cmd[0], cmd[1:]...).Output()
+func command(cmd string) []byte {
+	args := strings.Split(cmd, " ")
+	stdout, err := exec.Command(args[0], args[1:]...).Output()
+
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return bytes.TrimSpace(stdout)
+}
+
+func main() {
+	fromGit := command("git describe --tags --always --abbrev=0")
 
 	if regex.Match(fromGit) {
 		os.Stdout.Write(fromGit)
@@ -35,7 +43,7 @@ func main() {
 		}
 
 		manual := fmt.Sprintf("%s+dev%s",
-			strings.Trim(string(version), "\n"),
+			bytes.TrimSpace(version),
 			os.Getenv("GITHUB_RUN_NUMBER"))
 		os.Stdout.WriteString(manual)
 	}
