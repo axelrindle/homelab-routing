@@ -9,7 +9,7 @@ ARG DEB_ARCH
 
 RUN echo "Architecture: ${DEB_ARCH}" >> DEBIAN/control
 RUN echo "Version: ${DEB_VERSION}" >> DEBIAN/control
-RUN dpkg-deb --build . "homelab-traefik-${DEB_VERSION}-${DEB_ARCH}.deb"
+RUN dpkg-deb --build . "homelab-routing-${DEB_VERSION}-${DEB_ARCH}.deb"
 
 
 FROM scratch
