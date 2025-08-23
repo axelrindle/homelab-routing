@@ -12,6 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   GO_VERSION: '>=1.24.0'
+  TASK_VERSION: 3.x
 
 jobs:
   build:
@@ -31,7 +32,7 @@ jobs:
 
       - uses: arduino/setup-task@v2
         with:
-          version: 3.x
+          version: ${{ env.TASK_VERSION }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
@@ -69,7 +70,7 @@ jobs:
 
       - uses: arduino/setup-task@v2
         with:
-          version: 3.x
+          version: ${{ env.TASK_VERSION }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/download-artifact@v4
