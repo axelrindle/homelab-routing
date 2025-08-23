@@ -14,4 +14,4 @@ RUN dpkg-deb --build . "homelab-traefik-${DEB_VERSION}-${DEB_ARCH}.deb"
 
 FROM scratch
 
-COPY --from=build /usr/local/src/homelab-traefik.deb .
+COPY --from=build /usr/local/src/*.deb .
