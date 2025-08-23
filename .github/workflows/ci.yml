@@ -41,7 +41,7 @@ jobs:
         run: task test
 
       - name: Build binary
-        run: task build OUTPUT_FILE_SUFFIX="-${{ github.ref_name }}"
+        run: task build OUTPUT_FILE_SUFFIX="-${{ github.ref_name }}-${{ matrix.arch }}"
         env:
           GOOS: linux
           GOARCH: ${{ matrix.arch }}
