@@ -7,7 +7,7 @@ require (
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/goccy/go-yaml v1.18.0
 	github.com/gookit/config/v2 v2.2.7
-	github.com/traefik/traefik/v3 v3.5.0
+	github.com/traefik/traefik/v3 v3.5.3
 	go.uber.org/zap v1.27.0
 )
 
@@ -21,7 +21,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
-	github.com/go-acme/lego/v4 v4.25.1 // indirect
+	github.com/go-acme/lego/v4 v4.25.2 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.1 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
