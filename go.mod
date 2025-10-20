@@ -3,7 +3,7 @@ module github.com/axelrindle/traefik-configuration-provider
 go 1.24.5
 
 require (
-	github.com/go-co-op/gocron/v2 v2.16.3
+	github.com/go-co-op/gocron/v2 v2.16.6
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/goccy/go-yaml v1.18.0
 	github.com/gookit/config/v2 v2.2.7
