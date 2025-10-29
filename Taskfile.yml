@@ -7,9 +7,9 @@ vars:
   APP_PACKAGE:
     sh: cat go.mod | head -n1 | cut -d\  -f2
   APP_VERSION:
-    sh: git describe --tags
+    sh: git describe --tags --always --abbrev=0 || echo "0.0.0"
   APP_COMMIT_HASH:
-    sh: git rev-parse --short HEAD
+    sh: git rev-parse --short HEAD || echo "abcdef1234567890"
   APP_BUILD_TIMESTAMP:
     sh: date '+%Y-%m-%dT%H:%M:%S'
 
@@ -54,4 +54,9 @@ tasks:
       - pkg/debian/*.deb
     cmds:
       - cp "{{.OUTPUT_DIRECTORY}}/{{.OUTPUT_FILE_NAME}}{{.OUTPUT_FILE_SUFFIX}}" pkg/debian/usr/bin
-      - cd pkg/debian && docker build . -o . --build-arg "DEB_ARCH=${GOARCH}" --build-arg "DEB_VERSION={{.APP_VERSION}}"
+      - |
+        cd pkg/debian &&\
+        docker build . -o . \
+          --build-arg "DEB_NAME={{.OUTPUT_FILE_NAME}}" \
+          --build-arg "DEB_ARCH=${GOARCH}" \
+          --build-arg "DEB_VERSION={{.APP_VERSION}}"
