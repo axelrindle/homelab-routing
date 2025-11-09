@@ -19,6 +19,11 @@ func (a *App) fetchTraefikRouters() ([]routerRepresentation, error) {
 	url := fmt.Sprintf("%s/api/http/routers?status=enabled", a.Config.Traefik.Endpoint)
 
 	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		a.ready = false
+		return nil, err
+	}
+
 	if a.Config.Traefik.BasicAuth != "" {
 		req.Header.Add("Authorization", fmt.Sprintf("Basic %s", strToBase64(a.Config.Traefik.BasicAuth)))
 	}
