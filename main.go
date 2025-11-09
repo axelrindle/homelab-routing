@@ -4,6 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	_ "embed"
 
@@ -66,7 +69,17 @@ func main() {
 
 	app := &app.App{
 		Config: config,
-		Logger: logger,
+		Logger: logger.With(zap.String("component", "app")),
 	}
 	app.Init()
+
+	go app.Boot()
+
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+	<-signalChan
+
+	logger.Info("Shutting down …")
+
+	app.Shutdown()
 }

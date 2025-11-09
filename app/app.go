@@ -16,6 +16,7 @@ type App struct {
 
 	http      *http.Client
 	scheduler gocron.Scheduler
+	server    *http.Server
 
 	ready         bool
 	configuration dynamic.Configuration

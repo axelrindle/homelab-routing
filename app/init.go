@@ -19,8 +19,35 @@ func (a *App) Init() {
 	a.initHttpServer()
 }
 
+func (a *App) Boot() {
+	l, err := net.Listen("tcp", a.server.Addr)
+	if err != nil {
+		a.Logger.Fatal("failed to start http server", zap.Error(err))
+	}
+
+	a.Logger.Info("http server listening", zap.String("address", a.server.Addr))
+	err = a.server.Serve(l)
+	if err != http.ErrServerClosed {
+		a.Logger.Fatal("failed to shutdown the http server", zap.Error(err))
+	}
+}
+
+func (a *App) Shutdown() {
+	var err error
+
+	err = a.server.Close()
+	if err != nil {
+		a.Logger.Fatal("failed to shutdown the http server", zap.Error(err))
+	}
+
+	err = a.scheduler.Shutdown()
+	if err != nil {
+		a.Logger.Fatal("failed to shutdown the scheduler", zap.Error(err))
+	}
+}
+
 func (a *App) initScheduler() {
-	scheduler, err := gocron.NewScheduler()
+	scheduler, err := gocron.NewScheduler(gocron.WithStopTimeout(time.Second * 1))
 	if err != nil {
 		a.Logger.Fatal("failed to create a scheduler", zap.Error(err))
 	}
@@ -55,38 +82,23 @@ func (a *App) initHttpServer() {
 		file, err := yaml.Marshal(a.configuration)
 		if err != nil {
 			a.Logger.Fatal("failed to generate yaml", zap.Error(err))
-			w.WriteHeader(500)
+			w.WriteHeader(http.StatusInternalServerError)
 		} else {
 			w.Header().Add("Content-Type", "text/yaml")
-			w.WriteHeader(200)
+			w.WriteHeader(http.StatusOK)
 			w.Write(file)
 		}
 	})
 	mux.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
 		if a.ready {
-			w.WriteHeader(200)
+			w.WriteHeader(http.StatusOK)
 		} else {
-			w.WriteHeader(503)
+			w.WriteHeader(http.StatusServiceUnavailable)
 		}
 	})
-	server := &http.Server{
+
+	a.server = &http.Server{
 		Addr:    a.Config.Server.Address,
 		Handler: mux,
-	}
-
-	l, err := net.Listen("tcp", server.Addr)
-	if err != nil {
-		a.Logger.Fatal("failed to start http server", zap.Error(err))
-	}
-
-	a.Logger.Info("http server listening", zap.String("address", server.Addr))
-	err = server.Serve(l)
-	if err != http.ErrServerClosed {
-		a.Logger.Fatal("failed to shutdown the http server", zap.Error(err))
-	}
-
-	err = a.scheduler.Shutdown()
-	if err != nil {
-		a.Logger.Fatal("failed to shutdown the scheduler", zap.Error(err))
 	}
 }
