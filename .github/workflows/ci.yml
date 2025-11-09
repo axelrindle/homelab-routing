@@ -39,6 +39,11 @@ jobs:
           version: ${{ env.TASK_VERSION }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Lint
+        uses: dominikh/staticcheck-action@v1.2.0
+        with:
+          install-go: false
+
       - name: Run tests
         run: task test
 
