@@ -20,6 +20,9 @@ func init() {
 
 func (c *Config) Load(file string) {
 	err := config.LoadFiles(file)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	err = config.Decode(c)
 	if err != nil {
