@@ -84,7 +84,7 @@ jobs:
           version: ${{ env.TASK_VERSION }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: binary-${{ matrix.arch }}
           path: pkg/debian/usr/bin
@@ -112,7 +112,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         id: artifacts
         with:
           merge-multiple: true
