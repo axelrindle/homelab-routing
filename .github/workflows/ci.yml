@@ -53,7 +53,7 @@ jobs:
           GOOS: linux
           GOARCH: ${{ matrix.arch }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: binary-${{ matrix.arch }}
           path: dist/*
@@ -95,7 +95,7 @@ jobs:
           GOOS: linux
           GOARCH: ${{ matrix.arch }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: deb-${{ matrix.arch }}
           path: pkg/debian/*.deb
