@@ -46,6 +46,12 @@ func (a *App) initHttpServer() {
 			return
 		}
 
+		if len(a.configuration.HTTP.Routers) == 0 {
+			w.Header().Add("Content-Type", "text/yaml")
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
 		file, err := yaml.Marshal(a.configuration)
 		if err != nil {
 			a.Logger.Fatal("failed to generate yaml", zap.Error(err))
