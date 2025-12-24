@@ -5,7 +5,7 @@ go 1.24.5
 require (
 	github.com/go-co-op/gocron/v2 v2.17.0
 	github.com/go-playground/validator/v10 v10.28.0
-	github.com/goccy/go-yaml v1.18.0
+	github.com/goccy/go-yaml v1.19.0
 	github.com/gookit/config/v2 v2.2.7
 	github.com/traefik/traefik/v3 v3.5.0
 	go.uber.org/zap v1.27.0
