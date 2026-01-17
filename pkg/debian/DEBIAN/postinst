@@ -1,7 +1,0 @@
-#!/bin/sh
-
-set -x
-
-systemctl daemon-reload
-systemctl enable traefik
-systemctl enable traefik-config

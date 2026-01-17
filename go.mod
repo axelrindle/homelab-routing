@@ -1,6 +1,6 @@
 module github.com/axelrindle/traefik-configuration-provider
 
-go 1.24.5
+go 1.25
 
 require (
 	github.com/go-co-op/gocron/v2 v2.18.2
@@ -19,7 +19,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.12.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
+	github.com/fxamacker/cbor/v2 v2.8.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
 	github.com/go-acme/lego/v4 v4.25.1 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.1 // indirect
@@ -61,6 +61,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
+	github.com/spf13/pflag v1.0.7 // indirect
 	github.com/traefik/paerser v0.2.2 // indirect
 	github.com/unrolled/render v1.7.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect

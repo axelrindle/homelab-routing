@@ -1,6 +1,0 @@
-Package: homelab-traefik
-Description: homelab traefik setup
-Maintainer: Axel Rindle
-Source: https://github.com/axelrindle/homelab-routing
-Priority: optional
-Depends: systemd
