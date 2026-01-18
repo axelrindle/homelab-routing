@@ -91,9 +91,6 @@ jobs:
           name: binary-${{ matrix.arch }}
           path: dist/
 
-      - name: Show directory
-        run: tree
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -113,6 +110,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          context: .
 
       - name: Export digest
         run: |
