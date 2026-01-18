@@ -70,7 +70,7 @@ func (a *App) buildTraefikConfiguration(src []routerRepresentation) dynamic.Conf
 			Service:     name,
 			EntryPoints: a.Config.Generator.Entrypoints,
 			Middlewares: a.Config.Generator.Middlewares,
-			TLS:         &dynamic.RouterTLSConfig{},
+			TLS:         a.Config.Generator.TLS,
 		}
 		services[name] = &dynamic.Service{
 			LoadBalancer: &dynamic.ServersLoadBalancer{
