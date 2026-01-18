@@ -21,17 +21,17 @@ func init() {
 func (c *Config) Load(file string) {
 	err := config.LoadFiles(file)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to load config: ", err)
 	}
 
 	err = config.Decode(c)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("failed to parse config: ", err)
 	}
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
 	err = validate.Struct(c)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("config validation failed: ", err)
 	}
 }

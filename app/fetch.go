@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/axelrindle/traefik-configuration-provider/util"
 	dynamic "github.com/traefik/traefik/v3/pkg/config/dynamic"
 )
 
@@ -60,8 +61,10 @@ func (a *App) buildTraefikConfiguration(src []routerRepresentation) dynamic.Conf
 		if router.Status != "enabled" {
 			continue
 		}
-		if a.Config.Traefik.RuleFilter != "" && !strings.Contains(router.Rule, a.Config.Traefik.RuleFilter) {
-			continue
+		if len(a.Config.Traefik.RuleFilter) > 0 {
+			if !util.ContainsAny(router.Rule, a.Config.Traefik.RuleFilter) {
+				continue
+			}
 		}
 
 		name := strings.Split(router.Name, "@")[0]

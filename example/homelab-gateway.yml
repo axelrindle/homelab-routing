@@ -10,8 +10,9 @@ traefik:
   # I placed basic authentication in my setup
   basicAuth: traefik:traefik
 
-  # only include rules which contain this string
-  ruleFilter: example.dev
+  # only include rules which contain the given strings
+  ruleFilter:
+    - example.dev
 
 generator:
   # load-balance to the k3s manager nodes
