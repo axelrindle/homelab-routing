@@ -92,6 +92,9 @@ jobs:
           name: binary-${{ matrix.arch }}
           path: dist/
 
+      - name: List files
+        run: tree
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
