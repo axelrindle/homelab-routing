@@ -4,8 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	_ "embed"
@@ -26,8 +28,9 @@ var (
 )
 
 var (
-	showVersion bool
 	configFile  string
+	showVersion bool
+	healthcheck bool
 )
 
 func BuildVersion() string {
@@ -47,8 +50,9 @@ func makeLogger(c *config.Config) (*zap.Logger, error) {
 func main() {
 	println(banner)
 
-	flag.BoolVar(&showVersion, "version", false, "show program version")
 	flag.StringVar(&configFile, "config", "config.yml", "path to the config file")
+	flag.BoolVar(&showVersion, "version", false, "show program version")
+	flag.BoolVar(&healthcheck, "healthcheck", false, "run a healthcheck")
 	flag.Parse()
 	if showVersion {
 		println(BuildVersion())
@@ -61,6 +65,25 @@ func main() {
 	logger, err := makeLogger(config)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if healthcheck {
+		addressParts := strings.Split(config.Server.Address, ":")
+		if len(addressParts) != 2 {
+			logger.Fatal("invalid server address", zap.String("address", config.Server.Address))
+		}
+		port := addressParts[1]
+
+		res, err := http.Get("http://127.0.0.1:" + port + "/status")
+		if err != nil {
+			log.Fatal("healthcheck failed", zap.Error(err))
+		}
+
+		if res.StatusCode != 200 {
+			log.Fatal("healthcheck failed", zap.Int("status", res.StatusCode))
+		}
+
+		return
 	}
 
 	logger.Info("starting program", zap.String("mode", config.Environment))
