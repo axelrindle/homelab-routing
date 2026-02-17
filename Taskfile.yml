@@ -2,7 +2,7 @@ version: '3'
 
 vars:
   OUTPUT_DIRECTORY: dist
-  OUTPUT_FILE_NAME: traefik-configuration-provider
+  OUTPUT_FILE_NAME: traefik-forwarder
   OUTPUT_FILE_SUFFIX:
   APP_PACKAGE:
     sh: cat go.mod | head -n1 | cut -d\  -f2

@@ -1,4 +1,4 @@
-# homelab-gateway
+# traefik-forwarder
 
 > Dynamically expose Traefik routers to upstream Traefik instances
 
@@ -28,7 +28,7 @@ exposing routers from the `k3s` internal Traefik instance.
 
 ## Configuration
 
-Have a look in the `example/` and `pkg/debian/` directories for example configuration.
+Have a look in the `example/` directories for example configuration.
 
 ## License
 
