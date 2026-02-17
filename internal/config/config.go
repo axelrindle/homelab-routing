@@ -2,6 +2,10 @@ package config
 
 import "github.com/traefik/traefik/v3/pkg/config/dynamic"
 
+type LoggingConfig struct {
+	Level string `key:"level" default:"info" validate:"oneof=debug info warn error"`
+}
+
 type ServerConfig struct {
 	Address string `key:"address" default:":1337"`
 }
@@ -22,9 +26,10 @@ type GeneratorConfig struct {
 }
 
 type Config struct {
-	Server    ServerConfig
-	Traefik   TraefikConfig
-	Generator GeneratorConfig
+	Logging   LoggingConfig   `default:""`
+	Server    ServerConfig    `default:""`
+	Traefik   TraefikConfig   `default:""`
+	Generator GeneratorConfig `default:""`
 
 	Environment     string `key:"env" default:"production" validate:"oneof=production development"`
 	RefreshInterval int64  `key:"refresh" default:"30"`

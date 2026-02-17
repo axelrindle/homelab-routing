@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/axelrindle/traefik-configuration-provider/util"
+	"github.com/axelrindle/traefik-configuration-provider/internal/util"
 	dynamic "github.com/traefik/traefik/v3/pkg/config/dynamic"
 )
 

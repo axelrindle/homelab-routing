@@ -12,8 +12,8 @@ import (
 
 	_ "embed"
 
-	"github.com/axelrindle/traefik-configuration-provider/app"
-	"github.com/axelrindle/traefik-configuration-provider/config"
+	"github.com/axelrindle/traefik-configuration-provider/internal/app"
+	"github.com/axelrindle/traefik-configuration-provider/internal/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -39,16 +39,20 @@ func BuildVersion() string {
 
 func makeLogger(c *config.Config) (*zap.Logger, error) {
 	if c.Environment == "production" {
-		return zap.NewProduction()
+		conf := zap.NewProductionConfig()
+		conf.Level = c.ZapLoggerLevel()
+		conf.DisableCaller = true
+		return conf.Build()
 	} else {
 		conf := zap.NewDevelopmentConfig()
+		conf.Level = c.ZapLoggerLevel()
 		conf.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		return conf.Build()
 	}
 }
 
 func main() {
-	println(banner)
+	println(fmt.Sprintf(banner, BuildVersion()))
 
 	flag.StringVar(&configFile, "config", "config.yml", "path to the config file")
 	flag.BoolVar(&showVersion, "version", false, "show program version")
@@ -59,18 +63,17 @@ func main() {
 		return
 	}
 
-	config := &config.Config{}
-	config.Load(configFile)
+	cfg := config.Load(configFile)
 
-	logger, err := makeLogger(config)
+	logger, err := makeLogger(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if healthcheck {
-		addressParts := strings.Split(config.Server.Address, ":")
+		addressParts := strings.Split(cfg.Server.Address, ":")
 		if len(addressParts) != 2 {
-			logger.Fatal("invalid server address", zap.String("address", config.Server.Address))
+			logger.Fatal("invalid server address", zap.String("address", cfg.Server.Address))
 		}
 		port := addressParts[1]
 
@@ -86,12 +89,12 @@ func main() {
 		return
 	}
 
-	logger.Info("starting program", zap.String("mode", config.Environment))
+	logger.Info("starting program", zap.String("mode", cfg.Environment))
 
 	defer logger.Sync()
 
 	app := &app.App{
-		Config: config,
+		Config: cfg,
 		Logger: logger.With(zap.String("component", "app")),
 	}
 	app.Init()

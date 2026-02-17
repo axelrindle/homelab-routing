@@ -18,11 +18,13 @@ func init() {
 	})
 }
 
-func (c *Config) Load(file string) {
+func Load(file string) *Config {
 	err := config.LoadFiles(file)
 	if err != nil {
 		log.Fatal("failed to load config: ", err)
 	}
+
+	c := &Config{}
 
 	err = config.Decode(c)
 	if err != nil {
@@ -34,4 +36,6 @@ func (c *Config) Load(file string) {
 	if err != nil {
 		log.Fatal("config validation failed: ", err)
 	}
+
+	return c
 }
