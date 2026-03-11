@@ -53,10 +53,11 @@ jobs:
           GOOS: linux
           GOARCH: ${{ matrix.arch }}
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: binary-${{ matrix.arch }}
           path: dist/*
+          archive: false
 
   container-build:
     name: 🐳 Build Container Image
@@ -88,7 +89,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: binary-${{ matrix.arch }}
           path: dist/
@@ -125,7 +126,7 @@ jobs:
           touch "${{ runner.temp }}/digests/${digest#sha256:}"
 
       - name: Upload digest
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: container-image-digests-${{ matrix.arch }}
           path: ${{ runner.temp }}/digests/*
@@ -142,7 +143,7 @@ jobs:
       packages: write
     steps:
       - name: Download digests
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           path: ${{ runner.temp }}/digests
           pattern: container-image-digests-*
@@ -191,7 +192,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         id: artifacts
         with:
           merge-multiple: true
