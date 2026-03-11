@@ -57,7 +57,6 @@ jobs:
         with:
           name: binary-${{ matrix.arch }}
           path: dist/*
-          archive: false
 
   container-build:
     name: 🐳 Build Container Image
