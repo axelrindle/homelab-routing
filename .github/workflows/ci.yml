@@ -107,7 +107,7 @@ jobs:
             org.opencontainers.image.description="Dynamically expose Traefik routers to upstream Traefik instances"
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         id: build
         with:
           tags: ${{ env.REGISTRY }}/${{ github.repository }}
