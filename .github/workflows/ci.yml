@@ -204,7 +204,7 @@ jobs:
           pattern: ${{ github.ref_name }}
           no-print-matched-heading: true
 
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           prerelease: false
           body: |
