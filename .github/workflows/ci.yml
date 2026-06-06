@@ -117,6 +117,7 @@ jobs:
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
           context: .
           platforms: linux/${{ matrix.arch }}
+          push: ${{ github.event_name == 'push' }}
 
       - name: Export digest
         run: |
@@ -135,6 +136,7 @@ jobs:
   container-merge:
     name: 📦 Merge Container Manifests
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     needs:
       - container-build
     permissions:
